@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tesla sign-in code</title>
+<style>body{font-family:system-ui,sans-serif;max-width:34em;margin:2em auto;padding:0 1em;line-height:1.5}
+textarea{width:100%;height:7em;font-size:16px;box-sizing:border-box}button{font-size:18px;padding:.6em 1.2em;margin-top:.6em}</style></head>
+<body><h1>Tesla sign-in code</h1>
+<p id="msg">Looking for the code…</p>
+<textarea id="code" readonly hidden></textarea>
+<button id="copy" hidden>Copy code</button>
+<script>
+const p = new URLSearchParams(location.search), code = p.get('code'), err = p.get('error');
+const msg = document.getElementById('msg'), box = document.getElementById('code'), btn = document.getElementById('copy');
+if (code) {
+  msg.textContent = 'Copy this code and paste it into the "Tesla setup" run on GitHub. It only works once and expires in a few minutes.';
+  box.value = code; box.hidden = false; btn.hidden = false;
+  btn.addEventListener('click', async () => { box.select(); try { await navigator.clipboard.writeText(code); btn.textContent = 'Copied'; } catch (e) { document.execCommand('copy'); btn.textContent = 'Copied'; } });
+} else {
+  msg.textContent = err ? 'Tesla reported a problem: ' + err : 'No code found. Start again from the Tesla sign-in link.';
+}
+</script></body></html>
